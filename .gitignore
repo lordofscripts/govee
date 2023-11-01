@@ -8,6 +8,7 @@
 *.so
 *.dylib
 *~
+*.bfproject
 
 # Test binary, built with `go test -c`
 *.test
