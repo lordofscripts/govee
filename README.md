@@ -69,28 +69,34 @@ You should receive the personal API key within a day.)
 ### Usage
 
 > govee -list
+
 Uses your WiFi/Internet connection to query your local network and list ALL
 Govee smart devices. It will list them giving you their model number (for use
 with -model flag), MAC address (-mac flag) and official name.
 
 > govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} -on
+
 Turns on the device identified by the MAC address and Model number.
 
 > govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} -off
+
 Turns off the device identified by the MAC address and Model number.
 
 However, it is much easier to assign easy identifications to your device and
 even annotate it with their locations within your premises. For that, you need
 to use a *configuration file* as described above. Once you do that, you can
-easily turn your devices on or off using their alias, which you can remember
-without having to look them up. Here are the config-based versions of the
+easily turn your devices on or off using their alias. Device name aliases are much easier to remember. 
+
+Here are the config-based versions of the
 previous two commands:
 
 > govee -id {ALIAS_NAME} -on
+
 Turns on the device identified by the MAC address and Model number. For the
 sample configuration above it would become `govee -id SmartPlug1 -on`
 
 > govee -id {ALIAS_NAME} -off
+
 Turns off the device identified by the MAC address and Model number.
 
 -----
