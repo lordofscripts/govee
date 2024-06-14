@@ -30,18 +30,20 @@ executable.
 The configuration file, if present, should be at `~/.config/govee.json` and it
 must be in JSON format. It would look like this:
 
->{
->	"version": "0.1",
->	"apiKey": "YOUR GOVEE API KEY HERE"
->	"devices": [
->		{
->			"model": "H5083",
->			"mac": "DEVICE MAC ADDRESS",
->			"alias": "SmartPlug1",
->			"location": "Recamara #2"
->		}
->	]
->}
+```
+{
+	"version": "0.1",
+	"apiKey": "YOUR GOVEE API KEY HERE"
+	"devices": [
+		{
+			"model": "H5083",
+			"mac": "DEVICE MAC ADDRESS",
+			"alias": "SmartPlug1",
+			"location": "Recamara #2"
+		}
+	]
+}
+```
 
 The MAC address is a series of 8 hexadecimal pairs which is unique to each
 device and looks like this: `AA:BB:CC:DD:EE:FF:00:11`
