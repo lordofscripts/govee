@@ -1,4 +1,4 @@
-# Lord of Scripts(tm)) Govee CLI
+# Lord of Scripts&trade; Govee CLI
 
 This is a handy command-line interface application to list all Govee smart
 devices in your home network, as well as control them (On/Off).
