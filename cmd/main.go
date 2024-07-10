@@ -16,8 +16,8 @@ import (
     "strings"
     "time"
 
-    "lordofscripts/govee"
-    "lordofscripts/govee/util"
+    "github.com/lordofscripts/govee"
+    "github.com/lordofscripts/govee/util"
     veex "github.com/loxhill/go-vee"
 )
 
@@ -73,7 +73,7 @@ func getHelp() {
 	fmt.Println("   govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} [device command]")
 	// these two need a config file with entries
 	fmt.Println("   govee -id {ALIAS} [device command]")
-	fmt.Println("Options:")
+	fmt.Println("Flags:")
 	flag.PrintDefaults()
 	fmt.Println("\t*** ***")
 }

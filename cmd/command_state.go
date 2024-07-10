@@ -11,7 +11,7 @@ import (
 
 	veex "github.com/loxhill/go-vee"
 
-	"lordofscripts/govee"
+	"github.com/lordofscripts/govee"
 )
 
 /* ----------------------------------------------------------------

@@ -8,10 +8,11 @@ GOVEE API key installed. Without the API key it won't work and it is not include
 I'm sure you will find this utility quite handy. Feel free to consider a small
 donation so that I can continue working on these utilities:
 
-> |                                                                                           | Show your support                                                                                                 |
-|-------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------:|
-| [ ![AllMyLinks](./assets/allmylinks.png)](https://allmylinks.com/lordofscripts)      | visit <br> Lord of Scripts&trade; <br> on [AllMyLinks.com](https://allmylinks.com/lordofscripts)                  |
-| [ ![Buy me a coffee](./assets/buymecoffee.jpg)](https://allmylinks.com/lordofscripts)|  buy Lord of Scripts&trade; <br> a Capuccino on <br>[BuyMeACoffee.com](https://www.buymeacoffee.com/lostinwriting)|
+
+|     | Show your support   |
+| --- | :---: |
+| [ ![AllMyLinks](./docs/assets/allmylinks.png)](https://allmylinks.com/lordofscripts)      | visit <br> Lord of Scripts&trade; <br> on [AllMyLinks.com](https://allmylinks.com/lordofscripts)                  |
+| [ ![Buy me a coffee](./docs/assets/buymecoffee.jpg)](https://allmylinks.com/lordofscripts)|  buy Lord of Scripts&trade; <br> a Capuccino on <br>[BuyMeACoffee.com](https://www.buymeacoffee.com/lostinwriting)|
 
 ## Setup
 
@@ -67,7 +68,7 @@ The MAC address is a series of 8 hexadecimal pairs which *is unique to each
 device* and looks like this: `AA:BB:CC:DD:EE:FF:00:11`
 
 The convenience of this configuration file is that in it you can declare all your Govee smart
-devices by their *device model number*, i.e. "`H5083`" and their own *MAC address*, and in the 
+devices by their *device model number*, i.e. "`H5083`" and their own *MAC address*, and in the
 process assign them a unique *alias* or ID (required) and an optional *physical location*.
 
 ## Usage
@@ -112,13 +113,13 @@ There are two forms of performing executional commands with the CLI app:
 *Explicit addressing*
 : With this method the user must specify both the device's *MAC address* and *model number*. These explicit executional commands take the form:
 
-> `govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} {executable_command}`  
+> `govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} {executable_command}`
 > *Example*: `govee -mac AA:BB:CC:DD:EE:FF:00:11 -model H5083 {executable_command}`
 
 *Friendly addressing*
 : This alternative method spares the user from remembering or looking up a MAC address and model number. In this case the user only needs to remember the device's friendly name (alias). However, in order to use this, you will need to add the corresponding device entries in the configuration file. That way the app can look this `-id` up and figure out both the MAC address and model number. The implicit addressing commands take the form:
 
-> `govee -id {ALIAS_NAME} {execution_flag}`  
+> `govee -id {ALIAS_NAME} {execution_flag}`
 > *Example*: `govee -id SmartPlug1 {execution_flag}`
 
 With this in mind, we can now explain all the executable commands this app recognizes. With
@@ -126,8 +127,8 @@ them you will be able to control your Govee devices like smart plugs and lights.
 
 #### Execution Flags
 
-For brevity in this section we will only show the executable command to use on the CLI as it 
-would substitute `{execution_flag}` in the **Explicit & Friendly Addressing** command samples 
+For brevity in this section we will only show the executable command to use on the CLI as it
+would substitute `{execution_flag}` in the **Explicit & Friendly Addressing** command samples
 above.
 
 > `-on`
@@ -143,21 +144,21 @@ Turns off the chosen device.
 Queries the current state of the chosen device. It will show information such as whether it
 is online, powered on/off, etc.
 
-> `-brightness VALUE`  
+> `-brightness VALUE`
 > *Example*: `govee -id WallSconces -brightness 80`
 
 This command requires an integer parameter `VALUE` representing a *brightness percentage* (0..100). It is only functional if the chosen device is a Govee light/LED device.
 
-> `-color RGB_VALUE`  
-> *Example*: `govee -id WallSconces -color FFA512`  
-> *Example*: `govee -id WallSconces -color FA3`  
+> `-color RGB_VALUE`
+> *Example*: `govee -id WallSconces -color FFA512`
+> *Example*: `govee -id WallSconces -color FA3`
 > *Example*: `govee -id WallSconces -color "#FFA512"`
 
-This command requires a hexadecimal string parameter `RGB_VALUE` representing an 
-*RGB color* (0..100). It is only functional if the chosen device is a Govee light/LED device. 
+This command requires a hexadecimal string parameter `RGB_VALUE` representing an
+*RGB color* (0..100). It is only functional if the chosen device is a Govee light/LED device.
 
 The given RGB string represents the Red/Green/Blue triad that will be applied to all lights of the
-chosen device. This value, if specified with the # prefix, must be enclosed in double quotes. 
+chosen device. This value, if specified with the # prefix, must be enclosed in double quotes.
 However, it is easier to omit that prefix in which case the quotes can be omitted. The RGB value
 can be either 3 or 6 letters long.
 

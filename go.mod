@@ -1,4 +1,4 @@
-module lordofscripts/govee
+module github.com/lordofscripts/govee
 
 go 1.22.1
 
