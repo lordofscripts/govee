@@ -10,16 +10,17 @@ import (
 	"fmt"
 	"encoding/json"
 	"os"
+	"path"
 	"strings"
 )
 
 const (
 	GOVEE_ENV = "GOVEE_API"		// environment variable holding API KEY
-	CURRENT_VERSION = "1.0"
 	MODEL	= 'M'
 	MAC		= 'N'
 	ALIAS	= 'A'
 	LOCATION = 'L'
+	MIN_CONFIG_VERSION = "1.0"	// minimum configuration file version
 )
 
 /* ----------------------------------------------------------------
@@ -50,7 +51,7 @@ type GoveeConfig struct {
  *-----------------------------------------------------------------*/
 func NewConfig() *GoveeConfig {
 	c := &GoveeConfig{
-		Version: CURRENT_VERSION,
+		Version: MIN_CONFIG_VERSION,
 		ApiKey: os.Getenv(GOVEE_ENV),
 		Devices: make([]GoveeDevice,0),
 	}
@@ -101,6 +102,17 @@ func (q DeviceCollection) Count() int {
 /* ----------------------------------------------------------------
  *							F u n c t i o n s
  *-----------------------------------------------------------------*/
+
+func CreateSampleConfigFile() {
+	filename := path.Join(os.Getenv("HOME"), ".config/govee.json")
+	if _, err := os.Stat(filename); err != nil {
+		sample := NewConfig()
+		if key,set := getEnvAPI(); set {
+			sample.ApiKey = key
+		}
+	}
+}
+
 // Read the configureation file. Else return a default configuration.
 // The default configuration reads the API Key from the environment.
 func Read(filename string) *GoveeConfig {
@@ -134,8 +146,7 @@ func Read(filename string) *GoveeConfig {
 // Get the API Key only. If not present in the environment, then fallback
 // to the configuration file (if any).
 func GetAPI(filename string) string {
-	key,set := os.LookupEnv(GOVEE_ENV)
-	key = strings.Trim(key," \t")
+	key,set := getEnvAPI()
 	if len(key) == 0 {
 		// try to read config file
 		if len(filename) == 0 && !set{
@@ -149,4 +160,13 @@ func GetAPI(filename string) string {
 	return key
 }
 
- 
+// attempt to retrieve Govee API key from environment variable
+func getEnvAPI() (string, bool) {
+	key,set := os.LookupEnv(GOVEE_ENV)
+	if !set {
+		return "", false
+	}
+
+	key = strings.Trim(key," \t")
+	return key, true
+} 
