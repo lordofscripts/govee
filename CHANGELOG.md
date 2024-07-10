@@ -2,8 +2,6 @@
 
 > Govee API Utility `govee` written in pure GO
 
-Please see [Release Notes](./docs/RELEASE_NOTES.md) instead.
-
 ## [1.1](https://github.com/lordofscripts/govee/compare/v1.1...v1.0) (2024-07-10)
 
 > Added basic support for light control.
