@@ -73,11 +73,7 @@ func getHelp() {
 	fmt.Println("   govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} [device command]")
 	// these two need a config file with entries
 	fmt.Println("   govee -id {ALIAS} [device command]")
-<<<<<<< HEAD
 	fmt.Println("Flags:")
-=======
-	fmt.Println("Options:")
->>>>>>> 5dcdd76107d84fe349e4a7e34876d431af1b6103
 	flag.PrintDefaults()
 	fmt.Println("\t*** ***")
 }

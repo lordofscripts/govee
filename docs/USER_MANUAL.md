@@ -78,7 +78,7 @@ first is to retrieve information about the app or the local GOVEE ecosystem. The
 second type executes an order on a specific GOVEE device.
 
 
->| Flag        | Parameter      | Description              | Requires -mac & -model <br> OR -id flag(s) |
+| Flag        | Parameter      | Description              | Requires -mac & -model <br> OR -id flag(s) |
 |--------------|----------------|------------------------------------------|:--------------------------:|
 | *-help*      |                | Help information                         | no   |
 | *-list*      |                | List all devices in the network          | no   |
