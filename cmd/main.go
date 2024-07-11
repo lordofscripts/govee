@@ -26,12 +26,14 @@ const (
 	MY_CONFIG = ".config/govee.json" // config file relative to HOME_ENV
 	API_KEY = ""
 
+	RETVAL_OK = 0
 	RETVAL_CLI_MISSING int = 1
 	RETVAL_CLI_INVALID int = 2
 	RETVAL_CFG_ALIAS int = 3
 	RETVAL_CFG_MODEL int = 4
 	RETVAL_CFG_API int = 5
 	RETVAL_CMD_EXEC_ABORT int = 6
+	RETVAL_CLI_INIT int = 7
 )
 
 /* ----------------------------------------------------------------
@@ -88,11 +90,12 @@ func main() {
 	fmt.Printf("\t\t../ %s (c)2023-%d Lord of Scripts \\..\n", govee.Version, time.Now().Year())
 	fmt.Println("\t\t    https://allmylinks.com/lordofscripts")
 	// declare real CLI options
-	var optHelp, optList, optOn, optOff, optState bool
+	var optHelp, optList, optOn, optOff, optState, optInit bool
 	// declare CLI options which have an explicit value
 	var inDevice, inModel, inAlias, inColor string
 	var inBright uint
 	flag.BoolVar(&optHelp, "help", false, "This help")
+	flag.BoolVar(&optInit, "init", false, "Create sample config file")
 	flag.BoolVar(&optList, "list", false, "List devices")
 	flag.BoolVar(&optOn, "on", false, "Turn ON [device command]")
 	flag.BoolVar(&optOff, "off", false, "Turn OFF [device command]")
@@ -115,13 +118,25 @@ func main() {
 	}
 
 	// any command given or at least help?
-	if optHelp || !(optList || optOn || optOff || optState || voptBright || voptColor) {
+	if optHelp || !(optList || optOn || optOff || optState || optInit || voptBright || voptColor) {
 		getHelp()
 		if optHelp {
-			os.Exit(0)
+			os.Exit(RETVAL_OK)
 		}
 
 		die(RETVAL_CLI_MISSING, "Missing CLI options")
+	}
+
+	if optInit {
+		if created, err := govee.CreateSampleConfigFile(); err != nil {
+			die(RETVAL_CLI_INIT, err.Error())
+		} else {
+			if created {
+				die(RETVAL_OK, "Created configuration file. Please edit it.")
+			} else {
+				die(RETVAL_OK, "There is already a config file.")
+			}
+		}
 	}
 
 	// state && on & off are mutually exclusive

@@ -81,6 +81,7 @@ second type executes an order on a specific GOVEE device.
 | Flag        | Parameter      | Description              | Requires -mac & -model <br> OR -id flag(s) |
 |--------------|----------------|------------------------------------------|:--------------------------:|
 | *-help*      |                | Help information                         | no   |
+| *-init*      |                | Create a sample configuration file       | no   |
 | *-list*      |                | List all devices in the network          | no   |
 | -mac         |  *MAC address* | Device's network address                 |  N.A.|
 | -model       |  *device model*| Device's model number                    |  N.A.|
@@ -102,6 +103,12 @@ Displays information about all the commands and their parameters.
 Uses your WiFi/Internet connection to query your local network and list ALL
 **Govee** smart devices. It will list them, displaying their model number (for use
 with `-model` flag), MAC address (`-mac` flag) and official name.
+
+> `govee -init`
+
+You will typically use this command only the first time after installing the
+application. It creates a new sample configuration file that you should edit.
+If there is already one present, then no action is performed (no overwrite)..
 
 ### Executional Commands
 

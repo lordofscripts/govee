@@ -1,10 +1,10 @@
-# Lord of Scripts&trade; Govee CLI v1.1
+# Lord of Scripts&trade; GoveeLux CLI
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/lordofscripts/govee?style=flat-square)](https://goreportcard.com/report/github.com/lordofscripts/govee)
 ![Tests](https://github.com/lordofscripts/govee/actions/workflows/go.yml/badge.svg)
 [![Coverage](https://coveralls.io/repos/github/lordofscripts/govee/badge.svg?branch=main)](https://coveralls.io/github/lordofscripts/govee?branch=main)
 
-![Successful](./docs/assets/screenshot2.png)
+![Successful](./docs/assets/goveelux.png)
 
 *GoveeLux* is a handy command-line interface application to list all Govee smart
 devices in your home network,  control them (On/Off/Brightness/Color), or
