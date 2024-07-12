@@ -8,7 +8,7 @@ package util_test
 
 import (
 	"fmt"
-	"lordofscripts/govee/util"
+	"github.com/lordofscripts/govee/util"
 	"testing"
 )
 
