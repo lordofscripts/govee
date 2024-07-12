@@ -57,6 +57,3 @@ func ExclusiveOr(params ...bool) bool {
 	}
 	return !((cnt % 2) == 0)
 }
-
-
- 

@@ -22,7 +22,7 @@ const (
 	LOCATION           = 'L'
 	MIN_CONFIG_VERSION = "1.0" // minimum configuration file version
 
-	cEMPTY_MAC		   = "00:00:00:00:00:00:00:00"
+	cEMPTY_MAC = "00:00:00:00:00:00:00:00"
 )
 
 /* ----------------------------------------------------------------
@@ -126,10 +126,10 @@ func CreateSampleConfigFile() (bool, error) {
 		}
 
 		// sampleDev.IsValid() would return false
-		sampleDev := GoveeDevice{ "", cEMPTY_MAC, "", "Garage"}
+		sampleDev := GoveeDevice{"", cEMPTY_MAC, "", "Garage"}
 		sample.Devices = append(sample.Devices, sampleDev)
 
-		if fd, err := os.OpenFile(filename, os.O_CREATE | os.O_WRONLY, 0640); err != nil {
+		if fd, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0640); err != nil {
 			return false, err
 		} else {
 			defer fd.Close()

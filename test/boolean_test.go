@@ -8,8 +8,8 @@ package util_test
 
 import (
 	"fmt"
-	"testing"
 	"lordofscripts/govee/util"
+	"testing"
 )
 
 func init() {
@@ -21,8 +21,8 @@ func init() {
  *-----------------------------------------------------------------*/
 type testCase struct {
 	display string
-	values []bool
-	expect	bool
+	values  []bool
+	expect  bool
 }
 
 /* ----------------------------------------------------------------
@@ -42,23 +42,24 @@ const (
 
 var (
 	// test bit pattern values
-	value0 = []bool{false,false,false}
-	value1 = []bool{false,false,true}
-	value2 = []bool{false,true,false}
-	value3 = []bool{false,true,true}
-	value4 = []bool{true,false,false}
-	value5 = []bool{true,false,true}
-	value6 = []bool{true,true,false}
-	value7 = []bool{true,true,true}
+	value0 = []bool{false, false, false}
+	value1 = []bool{false, false, true}
+	value2 = []bool{false, true, false}
+	value3 = []bool{false, true, true}
+	value4 = []bool{true, false, false}
+	value5 = []bool{true, false, true}
+	value6 = []bool{true, true, false}
+	value7 = []bool{true, true, true}
 )
+
 /* ----------------------------------------------------------------
  *							C o n s t r u c t o r s
  *-----------------------------------------------------------------*/
-func newCase(disp string, exp bool,  vals []bool, ) testCase {
+func newCase(disp string, exp bool, vals []bool) testCase {
 	return testCase{
 		display: disp,
-		values: vals,
-		expect: exp,
+		values:  vals,
+		expect:  exp,
 	}
 }
 
@@ -66,7 +67,7 @@ func newCase(disp string, exp bool,  vals []bool, ) testCase {
  *							F u n c t i o n s
  *-----------------------------------------------------------------*/
 func TestOne(t *testing.T) {
-	testCases := []testCase {
+	testCases := []testCase{
 		newCase(PAT_O, false, value0),
 		newCase(PAT_1, true, value1),
 		newCase(PAT_2, true, value2),
@@ -77,7 +78,7 @@ func TestOne(t *testing.T) {
 		newCase(PAT_7, false, value7),
 	}
 
-	for i,tCase := range testCases {
+	for i, tCase := range testCases {
 		// https://stackoverflow.com/questions/23723955/how-can-i-pass-a-slice-as-a-variadic-input
 		result := util.One(tCase.values...)
 		if result != tCase.expect {
@@ -89,7 +90,7 @@ func TestOne(t *testing.T) {
 }
 
 func TestAny(t *testing.T) {
-	testCases := []testCase {
+	testCases := []testCase{
 		newCase(PAT_O, false, value0),
 		newCase(PAT_1, true, value1),
 		newCase(PAT_2, true, value2),
@@ -100,7 +101,7 @@ func TestAny(t *testing.T) {
 		newCase(PAT_7, true, value7),
 	}
 
-	for i,tCase := range testCases {
+	for i, tCase := range testCases {
 		result := util.Any(tCase.values...)
 		if result != tCase.expect {
 			t.Errorf("#%d FAIL Any-of %s needs:%t got %t\n", i, tCase.display, tCase.expect, result)
@@ -111,7 +112,7 @@ func TestAny(t *testing.T) {
 }
 
 func TestNone(t *testing.T) {
-	testCases := []testCase {
+	testCases := []testCase{
 		newCase(PAT_O, true, value0),
 		newCase(PAT_1, false, value1),
 		newCase(PAT_2, false, value2),
@@ -122,7 +123,7 @@ func TestNone(t *testing.T) {
 		newCase(PAT_7, false, value7),
 	}
 
-	for i,tCase := range testCases {
+	for i, tCase := range testCases {
 		result := util.None(tCase.values...)
 		if result != tCase.expect {
 			t.Errorf("#%d FAIL None-of %s needs:%t got %t\n", i, tCase.display, tCase.expect, result)
@@ -133,7 +134,7 @@ func TestNone(t *testing.T) {
 }
 
 func TestExclusiveOr(t *testing.T) {
-	testCases := []testCase {
+	testCases := []testCase{
 		newCase(PAT_O, false, value0),
 		newCase(PAT_1, true, value1),
 		newCase(PAT_2, true, value2),
@@ -144,7 +145,7 @@ func TestExclusiveOr(t *testing.T) {
 		newCase(PAT_7, true, value7),
 	}
 
-	for i,tCase := range testCases {
+	for i, tCase := range testCases {
 		result := util.ExclusiveOr(tCase.values...)
 		//checkmark := "\u2713"
 		if result != tCase.expect {
@@ -154,4 +155,3 @@ func TestExclusiveOr(t *testing.T) {
 		}
 	}
 }
- 

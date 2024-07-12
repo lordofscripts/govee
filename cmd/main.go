@@ -6,34 +6,35 @@
  * GOVEE smart devices in your network.
  *-----------------------------------------------------------------*/
 package main
+
 // https://govee-public.s3.amazonaws.com/developer-docs/GoveeDeveloperAPIReference.pdf
 
 import (
-    "flag"
-    "fmt"
-    "os"
-    "path"
-    "strings"
-    "time"
+	"flag"
+	"fmt"
+	"os"
+	"path"
+	"strings"
+	"time"
 
-    "github.com/lordofscripts/govee"
-    "github.com/lordofscripts/govee/util"
-    veex "github.com/loxhill/go-vee"
+	"github.com/lordofscripts/govee"
+	"github.com/lordofscripts/govee/util"
+	veex "github.com/loxhill/go-vee"
 )
 
 const (
-	HOME_ENV = "HOME"	// environment var. holding user home directory
+	HOME_ENV  = "HOME"               // environment var. holding user home directory
 	MY_CONFIG = ".config/govee.json" // config file relative to HOME_ENV
-	API_KEY = ""
+	API_KEY   = ""
 
-	RETVAL_OK = 0
-	RETVAL_CLI_MISSING int = 1
-	RETVAL_CLI_INVALID int = 2
-	RETVAL_CFG_ALIAS int = 3
-	RETVAL_CFG_MODEL int = 4
-	RETVAL_CFG_API int = 5
+	RETVAL_OK                 = 0
+	RETVAL_CLI_MISSING    int = 1
+	RETVAL_CLI_INVALID    int = 2
+	RETVAL_CFG_ALIAS      int = 3
+	RETVAL_CFG_MODEL      int = 4
+	RETVAL_CFG_API        int = 5
 	RETVAL_CMD_EXEC_ABORT int = 6
-	RETVAL_CLI_INIT int = 7
+	RETVAL_CLI_INIT       int = 7
 )
 
 /* ----------------------------------------------------------------
@@ -52,7 +53,7 @@ func findByMAC(mac string) *govee.GoveeDevice {
 	candidates := cfg.Devices.Where(govee.MAC, mac)
 	cnt := candidates.Count()
 	if cnt > 0 {
-		for _,v := range candidates {
+		for _, v := range candidates {
 			if strings.ToUpper(v.MacAddress) == mac {
 				return &v
 			}
@@ -64,7 +65,7 @@ func findByMAC(mac string) *govee.GoveeDevice {
 
 // print a message and terminate application execution
 func die(retVal int, format string, v ...any) {
-	fmt.Printf(format + "\n", v...)
+	fmt.Printf(format+"\n", v...)
 	os.Exit(retVal)
 }
 
@@ -185,30 +186,30 @@ func main() {
 	client := veex.New(key)
 	var command ICommand
 	switch {
-		case optList:
-			command = newCmdList(client)
+	case optList:
+		command = newCmdList(client)
 
-		case optOn:
-			command = newCmdOn(client, inDevice, inModel)
+	case optOn:
+		command = newCmdOn(client, inDevice, inModel)
 
-		case optOff:
-			command = newCmdOff(client, inDevice, inModel)
+	case optOff:
+		command = newCmdOff(client, inDevice, inModel)
 
-		case optState:
-			command = newCmdState(client, inDevice, inModel)
+	case optState:
+		command = newCmdState(client, inDevice, inModel)
 
-		case voptBright:
-			command = newCmdBrightness(client, inDevice, inModel, inBright)
+	case voptBright:
+		command = newCmdBrightness(client, inDevice, inModel, inBright)
 
-		case voptColor:
-			if !strings.HasPrefix(inColor, "#") {
-				inColor = "#" + inColor
-			}
-			if color, err := util.ParseHexColorGovee(inColor); err == nil {
-				command = newCmdColor(client, inDevice, inModel, color)
-			} else {
-				die(RETVAL_CLI_INVALID, "Invalid hex RGB color code: %s", inColor)
-			}
+	case voptColor:
+		if !strings.HasPrefix(inColor, "#") {
+			inColor = "#" + inColor
+		}
+		if color, err := util.ParseHexColorGovee(inColor); err == nil {
+			command = newCmdColor(client, inDevice, inModel, color)
+		} else {
+			die(RETVAL_CLI_INVALID, "Invalid hex RGB color code: %s", inColor)
+		}
 	}
 
 	if err := command.execute(); err != nil {
