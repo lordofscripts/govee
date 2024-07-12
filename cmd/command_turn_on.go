@@ -25,14 +25,14 @@ type OnCommand struct {
  *-----------------------------------------------------------------*/
 
 func newCmdOn(clientPtr *veex.Client, address, model string) *OnCommand {
-	 o := &OnCommand{
-	 	GoveeCommand: GoveeCommand{
-	 		Client: clientPtr,
-		 	Address: address,
-		 	Model: model,
-	 	},
-	 }
-	 return o
+	o := &OnCommand{
+		GoveeCommand: GoveeCommand{
+			Client:  clientPtr,
+			Address: address,
+			Model:   model,
+		},
+	}
+	return o
 }
 
 /* ----------------------------------------------------------------
@@ -49,4 +49,3 @@ func (c *OnCommand) execute() error {
 	_, err := c.Client.Run(controlRequest)
 	return err
 }
-

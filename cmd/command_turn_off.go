@@ -25,14 +25,14 @@ type OffCommand struct {
  *-----------------------------------------------------------------*/
 
 func newCmdOff(clientPtr *veex.Client, address, model string) *OffCommand {
-	 o := &OffCommand{
-	 	GoveeCommand: GoveeCommand{
-	 		Client: clientPtr,
-		 	Address: address,
-		 	Model: model,
-	 	},
-	 }
-	 return o
+	o := &OffCommand{
+		GoveeCommand: GoveeCommand{
+			Client:  clientPtr,
+			Address: address,
+			Model:   model,
+		},
+	}
+	return o
 }
 
 /* ----------------------------------------------------------------

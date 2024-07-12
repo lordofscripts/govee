@@ -26,14 +26,14 @@ type ListCommand struct {
  *-----------------------------------------------------------------*/
 
 func newCmdList(clientPtr *veex.Client) *ListCommand {
-	 o := &ListCommand{
-	 	GoveeCommand: GoveeCommand{
-	 		Client: clientPtr,
-		 	Address: "",
-		 	Model: "",
-	 	},
-	 }
-	 return o
+	o := &ListCommand{
+		GoveeCommand: GoveeCommand{
+			Client:  clientPtr,
+			Address: "",
+			Model:   "",
+		},
+	}
+	return o
 }
 
 /* ----------------------------------------------------------------
@@ -51,29 +51,28 @@ func (c *ListCommand) execute() error {
 		return err
 	} else {
 		devices := response.Devices()
-		for i,d := range devices {
+		for i, d := range devices {
 			dev := findByMAC(d.Device)
 			var alias string = "(please add to config file)"
 			var controllable string = "(can't be controlled)"
-			if dev != nil{
+			if dev != nil {
 				alias = dev.Alias
 			}
 			if d.Controllable {
 				controllable = ""
 			}
 			fmt.Printf("#%d %q\n\tDevice: %s\n\tModel : %s %s\n\tType  : %s\n",
-						i+1,
-						alias,
-						d.Device,
-						d.Model,
-						controllable,
-						d.DeviceName)
+				i+1,
+				alias,
+				d.Device,
+				d.Model,
+				controllable,
+				d.DeviceName)
 			fmt.Printf("\tCommands: %s\n", strings.Join(d.SupportCmds, "|"))
 			if is, rng := isLight(d); is {
-				fmt.Printf("\tLights: %t Range:(%d, %d)\n", is, rng.Min, rng.Max)
+				fmt.Printf("\tLights: %t Temp. Range:(%d, %d) Kelvin\n", is, rng.Min, rng.Max)
 			}
 		}
 	}
 	return nil
 }
-

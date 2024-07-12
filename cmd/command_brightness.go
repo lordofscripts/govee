@@ -12,14 +12,13 @@ import (
 	veex "github.com/loxhill/go-vee"
 )
 
-
 /* ----------------------------------------------------------------
  *							T y p e s
  *-----------------------------------------------------------------*/
 
 type BrightnessCommand struct {
 	GoveeCommand
-	brightness	int
+	brightness int
 }
 
 /* ----------------------------------------------------------------
@@ -30,17 +29,17 @@ func newCmdBrightness(clientPtr *veex.Client, address, model string, value uint)
 	// verify it is a light device
 	if dev := clientPtr.Device(address, model); dev != nil {
 		if hasLightControl(*dev) {
-			 o := &BrightnessCommand{
-		 		GoveeCommand: GoveeCommand{
-			 		Client: clientPtr,
-				 	Address: address,
-				 	Model: model,
-			 	},
-			 	brightness: int(value),
-			 }
+			o := &BrightnessCommand{
+				GoveeCommand: GoveeCommand{
+					Client:  clientPtr,
+					Address: address,
+					Model:   model,
+				},
+				brightness: int(value),
+			}
 
-			 return o
-		 }
+			return o
+		}
 	}
 
 	die(RETVAL_CMD_EXEC_ABORT, "Device model %s %q is not a LIGHT\n", model, address)
@@ -62,7 +61,7 @@ func (c *BrightnessCommand) execute() error {
 	controlRequest, err = c.Client.Device(c.Address, c.Model).SetBrightness(c.brightness)
 	if err == nil {
 		//var rsp veex.GoveeResponse
-		_, err = c.Client.Run(controlRequest)	// GoveeResponse, error
+		_, err = c.Client.Run(controlRequest) // GoveeResponse, error
 		//fmt.Printf("Response %#+v\n", rsp)
 	}
 

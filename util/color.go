@@ -80,4 +80,3 @@ func ParseHexColor(s string) (c color.RGBA, err error) {
 	}
 	return
 }
-

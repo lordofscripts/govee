@@ -1,8 +1,12 @@
 # Lord of Scripts&trade; GoveeLux CLI
 
+[![Years](https://badges.pufler.dev/years/lordofscripts/govee)](https://badges.pufler.dev)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lordofscripts/govee?style=flat-square)](https://goreportcard.com/report/github.com/lordofscripts/govee)
 ![Tests](https://github.com/lordofscripts/govee/actions/workflows/go.yml/badge.svg)
 [![Coverage](https://coveralls.io/repos/github/lordofscripts/govee/badge.svg?branch=main)](https://coveralls.io/github/lordofscripts/govee?branch=main)
+[![Visits](https://badges.pufler.dev/visits/lordofscripts/govee)](https://badges.pufler.dev)
+[![Created](https://badges.pufler.dev/created/lordofscripts/govee)](https://badges.pufler.dev)
+[![Updated](https://badges.pufler.dev/updated/lordofscripts/govee)](https://badges.pufler.dev)
 
 ![Successful](./docs/assets/goveelux.png)
 

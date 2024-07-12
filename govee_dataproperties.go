@@ -8,14 +8,13 @@ package govee
 
 import (
 	"fmt"
-	"log"
 	veex "github.com/loxhill/go-vee"
+	"log"
 )
 
 /* ----------------------------------------------------------------
  *							G l o b a l s
  *-----------------------------------------------------------------*/
-
 
 /* ----------------------------------------------------------------
  *						I n t e r f a c e s
@@ -26,13 +25,13 @@ import (
  *-----------------------------------------------------------------*/
 
 type GoveeDataProperties struct {
-	Address		string
-	Model		string
-	Online		bool
-	Powered		string
-	Brightness	int
-	Temperature	int
-	Color		string
+	Address     string
+	Model       string
+	Online      bool
+	Powered     string
+	Brightness  int
+	Temperature int
+	Color       string
 }
 
 /* ----------------------------------------------------------------
@@ -65,31 +64,31 @@ func (g *GoveeDataProperties) Parse(properties []map[string]any) error {
 
 	for _, prop := range properties {
 		//fmt.Printf("\t#%d %#v\n", i, prop)
-		for key,value := range prop {
+		for key, value := range prop {
 			switch key {
-				case "online":
-					g.Online = value.(bool)
-					break
-				case "powerState":
-					g.Powered = value.(string)
-					break
-				case "brightness":
-					g.Brightness= int(value.(float64))
-					break
-				case "color":
-					if colormap, ok := value.(map[string]any); ok {
-						color := veex.Color{
-							R: int(colormap["r"].(float64)),
-							G: int(colormap["g"].(float64)),
-							B: int(colormap["b"].(float64)),
-						}
-						g.Color = funcColorToHex(color)
-					} else {
-						err = fmt.Errorf("Not a color! %#v", value)
+			case "online":
+				g.Online = value.(bool)
+				break
+			case "powerState":
+				g.Powered = value.(string)
+				break
+			case "brightness":
+				g.Brightness = int(value.(float64))
+				break
+			case "color":
+				if colormap, ok := value.(map[string]any); ok {
+					color := veex.Color{
+						R: int(colormap["r"].(float64)),
+						G: int(colormap["g"].(float64)),
+						B: int(colormap["b"].(float64)),
 					}
-				case "colorTem":
-					err = fmt.Errorf("colorTem property parsing not supported")
-					break
+					g.Color = funcColorToHex(color)
+				} else {
+					err = fmt.Errorf("Not a color! %#v", value)
+				}
+			case "colorTem":
+				err = fmt.Errorf("colorTem property parsing not supported")
+				break
 			}
 		}
 	}
@@ -105,5 +104,3 @@ func (g *GoveeDataProperties) IsLight() bool {
 /* ----------------------------------------------------------------
  *							F u n c t i o n s
  *-----------------------------------------------------------------*/
-
-
