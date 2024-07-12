@@ -11,12 +11,13 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"runtime"
 	"strings"
 )
 
 const (
 	GOVEE_ENV          = "GOVEE_API" // environment variable holding API KEY
-	MIN_CONFIG_VERSION = "1.0" // minimum configuration file version
+	MIN_CONFIG_VERSION = "1.0"       // minimum configuration file version
 )
 
 /* ----------------------------------------------------------------
@@ -49,14 +50,13 @@ func NewConfig() *GoveeConfig {
  *							M e t h o d s
  *-----------------------------------------------------------------*/
 
-
 /* ----------------------------------------------------------------
  *							F u n c t i o n s
  *-----------------------------------------------------------------*/
 
 func CreateSampleConfigFile() (bool, error) {
 	created := false
-	filename := path.Join(os.Getenv("HOME"), ".config/govee.json")
+	filename := getConfigFullPath()
 	if _, err := os.Stat(filename); err != nil {
 		sample := NewConfig()
 		if key, set := getEnvAPI(); set {
@@ -64,7 +64,7 @@ func CreateSampleConfigFile() (bool, error) {
 		}
 
 		// sampleDev.IsValid() would return false
-		sampleDev := GoveeDevice{"", cEMPTY_MAC, "", "Garage"}
+		sampleDev := GoveeDevice{"", cEMPTY_MAC, "", "Sample Room"}
 		sample.Devices = append(sample.Devices, sampleDev)
 
 		if fd, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0640); err != nil {
@@ -87,7 +87,8 @@ func CreateSampleConfigFile() (bool, error) {
 
 // Read the configureation file. Else return a default configuration.
 // The default configuration reads the API Key from the environment.
-func Read(filename string) *GoveeConfig {
+func ReadConfig() *GoveeConfig {
+	filename := getConfigFullPath()
 	if _, err := os.Stat(filename); err != nil {
 		fmt.Printf("WARN: Cannot read config %s", filename)
 		return NewConfig()
@@ -109,6 +110,14 @@ func Read(filename string) *GoveeConfig {
 		return NewConfig()
 	}
 
+	// normalize to ensure Search with Where() doesn't fail unnecessarily
+	for i, dev := range cfg.Devices {
+		//dev.Model = strings.ToUpper(strings.TrimSpace(dev.Model))
+		//dev.MacAddress = strings.ToUpper(strings.TrimSpace(dev.MacAddress))
+		cfg.Devices[i].Model = strings.ToUpper(strings.TrimSpace(dev.Model))
+		cfg.Devices[i].MacAddress = strings.ToUpper(strings.TrimSpace(dev.MacAddress))
+	}
+
 	if len(cfg.ApiKey) == 0 {
 		cfg.ApiKey = os.Getenv(GOVEE_ENV)
 	}
@@ -117,20 +126,23 @@ func Read(filename string) *GoveeConfig {
 
 // Get the API Key only. If not present in the environment, then fallback
 // to the configuration file (if any).
-func GetAPI(filename string) string {
+func GetAPI() string {
 	key, set := getEnvAPI()
 	if len(key) == 0 {
 		// try to read config file
-		if len(filename) == 0 && !set {
-			fmt.Printf("Please set your API key on environment %q or create config file\n", GOVEE_ENV)
-			return ""
-		}
+		cfg := ReadConfig()
+		key = cfg.ApiKey
 
-		cfg := Read(filename)
-		return cfg.ApiKey
+		if len(key) == 0 && !set {
+			fmt.Printf("Please set your API key on environment %q or create config file\n", GOVEE_ENV)
+		}
 	}
 	return key
 }
+
+/* ----------------------------------------------------------------
+ *				I n t e r n a l 	F u n c t i o n s
+ *-----------------------------------------------------------------*/
 
 // attempt to retrieve Govee API key from environment variable
 func getEnvAPI() (string, bool) {
@@ -141,4 +153,34 @@ func getEnvAPI() (string, bool) {
 
 	key = strings.Trim(key, " \t")
 	return key, true
+}
+
+// build the full path to the GoveeLux configuration file and take into
+// account whether it is MacOS, Linux or Windows.
+func getConfigFullPath() string {
+	const (
+		HOME_ENV  = "HOME"                  // environment var. holding user home directory
+		MY_CONFIG = ".config/goveelux.json" // config file relative to HOME_ENV
+	)
+	// platform-generic user profile directory 'HOME'
+	basename := MY_CONFIG
+	envVar := HOME_ENV
+
+	switch runtime.GOOS {
+	case "windows":
+		envVar = "USERPROFILE"
+		basename = "goveelux.json"
+		break
+	case "darwin":
+		envVar = "HOME"
+		basename = ".goveelux.json"
+		break
+	case "linux":
+		fallthrough
+	default:
+		envVar = HOME_ENV
+		basename = MY_CONFIG
+	}
+
+	return path.Join(os.Getenv(envVar), basename)
 }

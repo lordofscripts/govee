@@ -46,8 +46,18 @@ the MAC addresses and model numbers of your local devices.
 
 ### Configuration File
 
-The configuration file, if present, should be at `~/.config/govee.json` and it
-must be in JSON format. It would look like this:
+The configuration file, if present, it should be in JSON format. If not present
+create one with the `init` flag. This configuration file location depends on
+which OS you use:
+
+Linux
+: `~/.config/goveelux.json`
+Windows
+: `$USERPROFILE\goveelux.json`
+MacOS
+: `$HOME/.goveelux.json`
+
+It would look like this:
 
 ```json
 {

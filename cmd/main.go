@@ -13,7 +13,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path"
 	"strings"
 	"time"
 
@@ -23,9 +22,7 @@ import (
 )
 
 const (
-	HOME_ENV  = "HOME"               // environment var. holding user home directory
-	MY_CONFIG = ".config/govee.json" // config file relative to HOME_ENV
-	API_KEY   = ""
+	API_KEY = ""
 
 	RETVAL_OK                 = 0
 	RETVAL_CLI_MISSING    int = 1
@@ -45,12 +42,12 @@ const (
  *							F u n c t i o n s
  *-----------------------------------------------------------------*/
 
-// look up our ~/.config/govee.json for entries matching MAC
+// look up our configuration for entries matching MAC
 func findByMAC(mac string) *govee.GoveeDevice {
-	cfgFilename := path.Join(os.Getenv(HOME_ENV), MY_CONFIG)
 	mac = strings.ToUpper(mac)
-	cfg := govee.Read(cfgFilename)
+	cfg := govee.ReadConfig()
 	candidates := cfg.Devices.Where(govee.FieldMAC, mac)
+
 	cnt := candidates.Count()
 	if cnt > 0 {
 		for _, v := range candidates {
@@ -72,10 +69,10 @@ func die(retVal int, format string, v ...any) {
 func getHelp() {
 	fmt.Printf("%s by Lord of Scripts\n", govee.Version)
 	fmt.Println("Usage:")
-	fmt.Println("   govee -list")
-	fmt.Println("   govee -mac {MAC_ADDRESS} -model {MODEL_NUMBER} [device command]")
+	fmt.Println("   goveelux -list")
+	fmt.Println("   goveelux -mac {MAC_ADDRESS} -model {MODEL_NUMBER} [device command]")
 	// these two need a config file with entries
-	fmt.Println("   govee -id {ALIAS} [device command]")
+	fmt.Println("   goveelux -id {ALIAS} [device command]")
 	fmt.Println("Flags:")
 	flag.PrintDefaults()
 	fmt.Println("\t*** ***")
@@ -148,10 +145,8 @@ func main() {
 	}
 
 	// Config
-	cfgFilename := path.Join(os.Getenv(HOME_ENV), MY_CONFIG)
-
 	if len(inAlias) != 0 {
-		cfg := govee.Read(cfgFilename)
+		cfg := govee.ReadConfig()
 		candidates := cfg.Devices.Where(govee.FieldALIAS, inAlias)
 		cnt := candidates.Count()
 		if cnt == 0 {
@@ -177,7 +172,7 @@ func main() {
 		inModel = strings.ToUpper(inModel)
 	}
 
-	key := govee.GetAPI(cfgFilename)
+	key := govee.GetAPI()
 	if len(key) == 0 {
 		die(RETVAL_CFG_API, "You forgot to set your GOVEE API Key!")
 	}

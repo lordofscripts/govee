@@ -41,13 +41,21 @@ donation so that I can continue working on these utilities:
 - github.com/loxhill/go-vee
 - Request a [Govee API key](https://developer.govee.com/reference/apply-you-govee-api-key)
 
+### Operating Systems
+
+`goveelux` should work in any of the following Operating Systems:
+
+* Linux (tested on Debian, Raspberry Pi 2)
+* Microsoft Windows
+* MacOS
+
 ### Obtaining a GOVEE API key
 
 The keys are for personal use only, if you keep that in mind and suits your needs,
 then all is okay.
 
 - Install the Govee Home app on your mobile. You probably already have since
-  you have a Govee device. I am using Govee Home app v5.8.30.
+  you have a Govee device. I am using Govee Home app.
 - Click on the Cog wheel (`Settings`) on the upper right)
 - In the `Settings` page, click on the `Apply for API Key`
 - Fill out the requested information (Name, reason, agreement) and send.
@@ -58,7 +66,7 @@ GOVEE API key before using this application.
 
 ## Usage
 
-The executable file (deliverable) is `govee`. For details about how to use it and documentation
+The executable file (deliverable) is `goveelux`. For details about how to use it and documentation
 of all the flags and parameters, please read the short [User Manual](./docs/USER_MANUAL.md).
 You may also want to read the [Release Notes](./CHANGELOG.md) to see which
 features are supported in your application version.
