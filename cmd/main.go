@@ -50,7 +50,7 @@ func findByMAC(mac string) *govee.GoveeDevice {
 	cfgFilename := path.Join(os.Getenv(HOME_ENV), MY_CONFIG)
 	mac = strings.ToUpper(mac)
 	cfg := govee.Read(cfgFilename)
-	candidates := cfg.Devices.Where(govee.MAC, mac)
+	candidates := cfg.Devices.Where(govee.FieldMAC, mac)
 	cnt := candidates.Count()
 	if cnt > 0 {
 		for _, v := range candidates {
@@ -152,7 +152,7 @@ func main() {
 
 	if len(inAlias) != 0 {
 		cfg := govee.Read(cfgFilename)
-		candidates := cfg.Devices.Where(govee.ALIAS, inAlias)
+		candidates := cfg.Devices.Where(govee.FieldALIAS, inAlias)
 		cnt := candidates.Count()
 		if cnt == 0 {
 			die(RETVAL_CFG_ALIAS, "Could not find alias %q in repository\n", inAlias)

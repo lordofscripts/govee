@@ -60,7 +60,7 @@ GOVEE API key before using this application.
 
 The executable file (deliverable) is `govee`. For details about how to use it and documentation
 of all the flags and parameters, please read the short [User Manual](./docs/USER_MANUAL.md).
-You may also want to read the [Release Notes](./docs/CHANGELOG.md) to see which
+You may also want to read the [Release Notes](./CHANGELOG.md) to see which
 features are supported in your application version.
 
 -----
