@@ -9,6 +9,7 @@ package govee
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"runtime"
@@ -68,6 +69,7 @@ func CreateSampleConfigFile() (bool, error) {
 		sample.Devices = append(sample.Devices, sampleDev)
 
 		if fd, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0640); err != nil {
+			log.Println("ERR-CFG", err.Error())
 			return false, err
 		} else {
 			defer fd.Close()
@@ -75,6 +77,7 @@ func CreateSampleConfigFile() (bool, error) {
 			jsonEncoder := json.NewEncoder(fd)
 			jsonEncoder.SetIndent("", "\t")
 			if err := jsonEncoder.Encode(sample); err != nil {
+				log.Println("ERR-CFG", err.Error())
 				return false, err
 			} else {
 				created = true
@@ -158,13 +161,8 @@ func getEnvAPI() (string, bool) {
 // build the full path to the GoveeLux configuration file and take into
 // account whether it is MacOS, Linux or Windows.
 func getConfigFullPath() string {
-	const (
-		HOME_ENV  = "HOME"                  // environment var. holding user home directory
-		MY_CONFIG = ".config/goveelux.json" // config file relative to HOME_ENV
-	)
 	// platform-generic user profile directory 'HOME'
-	basename := MY_CONFIG
-	envVar := HOME_ENV
+	var basename, envVar string
 
 	switch runtime.GOOS {
 	case "windows":
@@ -176,10 +174,11 @@ func getConfigFullPath() string {
 		basename = ".goveelux.json"
 		break
 	case "linux":
-		fallthrough
+		envVar = "HOME"
+		basename = ".config/goveelux.json"
+		break
 	default:
-		envVar = HOME_ENV
-		basename = MY_CONFIG
+		log.Fatal("ERR-CFG", "unknown OS")
 	}
 
 	return path.Join(os.Getenv(envVar), basename)

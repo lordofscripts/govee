@@ -60,6 +60,30 @@ func findByMAC(mac string) *govee.GoveeDevice {
 	return nil
 }
 
+func resolveAlias(deviceID, defAddress, defModel string) (address, model string) {
+	if len(deviceID) != 0 {
+		cfg := govee.ReadConfig()
+		candidates := cfg.Devices.Where(govee.FieldALIAS, deviceID)
+		cnt := candidates.Count()
+		if cnt == 0 {
+			die(RETVAL_CFG_ALIAS, "Could not find alias %q in repository\n", deviceID)
+		}
+
+		if cnt > 1 {
+			die(RETVAL_CFG_ALIAS, "Found %d entries. Alias not unique, please correct config\n", cnt)
+		}
+
+		fmt.Println("\tFound  ", candidates[0], "\n\tAt     :", candidates[0].Location)
+		address = candidates[0].MacAddress
+		model = candidates[0].Model
+	} else {
+		address = defAddress
+		model = defModel
+	}
+
+	return address, model
+}
+
 // print a message and terminate application execution
 func die(retVal int, format string, v ...any) {
 	fmt.Printf(format+"\n", v...)
@@ -85,8 +109,8 @@ func main() {
 	const (
 		DEF_BRIGHT uint = 101
 	)
-	fmt.Printf("\t\t../ %s (c)2023-%d Lord of Scripts \\..\n", govee.Version, time.Now().Year())
-	fmt.Println("\t\t    https://allmylinks.com/lordofscripts")
+	fmt.Printf("\t../ %s (c)2023-%d Lord of Scripts \\..\n", govee.Version, time.Now().Year())
+	fmt.Println("\t    https://allmylinks.com/lordofscripts")
 	// declare real CLI options
 	var optHelp, optList, optOn, optOff, optState, optInit bool
 	// declare CLI options which have an explicit value
@@ -145,22 +169,7 @@ func main() {
 	}
 
 	// Config
-	if len(inAlias) != 0 {
-		cfg := govee.ReadConfig()
-		candidates := cfg.Devices.Where(govee.FieldALIAS, inAlias)
-		cnt := candidates.Count()
-		if cnt == 0 {
-			die(RETVAL_CFG_ALIAS, "Could not find alias %q in repository\n", inAlias)
-		}
-
-		if cnt > 1 {
-			die(RETVAL_CFG_ALIAS, "Found %d entries. Alias not unique, please correct config\n", cnt)
-		}
-
-		fmt.Println("\tFound  ", candidates[0], "\n\tAt     :", candidates[0].Location)
-		inDevice = candidates[0].MacAddress
-		inModel = candidates[0].Model
-	}
+	inDevice, inModel = resolveAlias(inAlias, inDevice, inModel)
 
 	// with STATE, ON & OFF commands DEVICE & MODEL are required
 	if (optOn || optOff || optState) && ((len(inDevice) == 0) && (len(inModel) == 0)) {
