@@ -88,19 +88,19 @@ first is to retrieve information about the app or the local GOVEE ecosystem. The
 second type executes an order on a specific GOVEE device.
 
 
-| Flag        | Parameter      | Description              | Requires -mac & -model <br> OR -id flag(s) |
+| Flag         | Parameter      | Description                              | Requires -mac & -model <br> OR -id flag(s) |
 |--------------|----------------|------------------------------------------|:--------------------------:|
 | *-help*      |                | Help information                         | no   |
 | *-init*      |                | Create a sample configuration file       | no   |
 | *-list*      |                | List all devices in the network          | no   |
-| -mac         |  *MAC address* | Device's network address                 |  N.A.|
-| -model       |  *device model*| Device's model number                    |  N.A.|
+| -mac         | *MAC address*  | Device's network address                 |  N.A.|
+| -model       | *device model* | Device's model number                    |  N.A.|
 | -id          | *unique_name*  |  Device alias (friendly name)            | N.A. |
 | *-on*        |                | Turn on the device                       | yes  |
 | *-off*       |                | Turn off the device                      | yes  |
-| *-state*     |        | Request device info & state      | yes |
+| *-state*     |                | Request device info & state              | yes  |
 | *-brightness*| `0..100`       | Set brightness percentage *(lights only)*| yes  |
-| *-color*     |   `aabbcc`     |  Set RGB color to #aabbcc *(lights only)*| yes  |
+| *-color*     |`blue`/`#aabbcc`| Set RGB color to basic color or #aabbcc *(lights only)*| yes  |
 
 ### Informational Commands
 
@@ -166,18 +166,16 @@ is online, powered on/off, etc.
 
 This command requires an integer parameter `VALUE` representing a *brightness percentage* (0..100). It is only functional if the chosen device is a Govee light/LED device.
 
-> `-color RGB_VALUE`
-> *Example*: `govee -id WallSconces -color FFA512`
-> *Example*: `govee -id WallSconces -color FA3`
+> `-color BASIC_COLOR or RGB_VALUE`
+> *Example*: `govee -id WallSconces -color orange`
+> *Example*: `govee -id WallSconces -color \#FA3`
 > *Example*: `govee -id WallSconces -color "#FFA512"`
 
-This command requires a hexadecimal string parameter `RGB_VALUE` representing an
+This command requires a basic color (use `-help` for a list of supported basic colors) *or* a hexadecimal string parameter `RGB_VALUE` representing an
 *RGB color* (0..100). It is only functional if the chosen device is a Govee light/LED device.
 
 The given RGB string represents the Red/Green/Blue triad that will be applied to all lights of the
-chosen device. This value, if specified with the # prefix, must be enclosed in double quotes.
-However, it is easier to omit that prefix in which case the quotes can be omitted. The RGB value
-can be either 3 or 6 letters long.
+chosen device. **NOTE:** Must be enclosed in double quotes (`"#AABBCC"`) or prefixed with a backslash (`\#AABBCC`), otherwise `#` is interpreted as a comment in most shells. The RGB value can be either 3 or 6 letters long.
 
 
 -----

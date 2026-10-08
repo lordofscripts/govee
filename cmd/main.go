@@ -91,6 +91,11 @@ func die(retVal int, format string, v ...any) {
 }
 
 func getHelp() {
+	basicColors := make([]string, 0, len(util.BasicColors))
+	for k := range util.BasicColors {
+		basicColors = append(basicColors, k)
+	}
+
 	fmt.Printf("%s by Lord of Scripts\n", govee.Version)
 	fmt.Println("Usage:")
 	fmt.Println("   goveelux -list")
@@ -99,7 +104,9 @@ func getHelp() {
 	fmt.Println("   goveelux -id {ALIAS} [device command]")
 	fmt.Println("Flags:")
 	flag.PrintDefaults()
-	fmt.Println("\t*** ***")
+	fmt.Println("Colors:")
+	fmt.Printf("    Basic: %s\n", strings.Join(basicColors, ", "))
+	fmt.Println("    Hexadecimal RGB color codes follow the format #RRGGBB (e.g. #eebb22)")
 }
 
 /* ----------------------------------------------------------------
@@ -125,7 +132,7 @@ func main() {
 	flag.StringVar(&inDevice, "mac", "", "Device MAC")
 	flag.StringVar(&inModel, "model", "", "Device Model")
 	flag.StringVar(&inAlias, "id", "", "Device alias (derive Model & MAC from this)")
-	flag.StringVar(&inColor, "color", "", "Hexadecimal RGB color code, i.e. ffa512")
+	flag.StringVar(&inColor, "color", "", "A color, specified as either the name of a basic color (e.g. \"blue\"), or a hexadecimal RGB color code (e.g. #ffa512)")
 	flag.UintVar(&inBright, "brightness", DEF_BRIGHT, "Light brightness (0..100) [device command]")
 	flag.Parse()
 
@@ -206,13 +213,10 @@ func main() {
 		command = newCmdBrightness(client, inDevice, inModel, inBright)
 
 	case voptColor:
-		if !strings.HasPrefix(inColor, "#") {
-			inColor = "#" + inColor
-		}
-		if color, err := util.ParseHexColorGovee(inColor); err == nil {
+		if color, err := util.ParseColorGovee(inColor); err == nil {
 			command = newCmdColor(client, inDevice, inModel, color)
 		} else {
-			die(RETVAL_CLI_INVALID, "Invalid hex RGB color code: %s", inColor)
+			die(RETVAL_CLI_INVALID, "Invalid color: %s (%s)", inColor, err)
 		}
 	}
 

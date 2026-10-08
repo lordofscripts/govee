@@ -9,6 +9,7 @@ package util
 import (
 	"errors"
 	"image/color"
+	"strings"
 
 	veex "github.com/loxhill/go-vee"
 )
@@ -17,11 +18,40 @@ import (
  *							G l o b a l s
  *-----------------------------------------------------------------*/
 
-var ErrInvalidFormat = errors.New("invalid format")
+var ErrInvalidFormat = errors.New("invalid hex format")
+var ErrUnknownBasicColor = errors.New("unknown basic color")
+
+var BasicColors = map[string]veex.Color{
+	"red":    {255, 0, 0},
+	"orange": {255, 127, 0},
+	"yellow": {255, 255, 0},
+	"green":  {0, 255, 0},
+	"blue":   {0, 0, 255},
+	"cyan":   {0, 255, 255},
+	"purple": {139, 0, 255},
+	"white":  {255, 255, 255},
+}
 
 /* ----------------------------------------------------------------
  *							F u n c t i o n s
  *-----------------------------------------------------------------*/
+
+func ParseColorGovee(s string) (veex.Color, error) {
+	if strings.HasPrefix(s, "#") {
+		return ParseHexColorGovee(s)
+	} else {
+		return ParseBasicColorGovee(s)
+	}
+}
+
+func ParseBasicColorGovee(s string) (veex.Color, error) {
+	color, ok := BasicColors[strings.ToLower(s)]
+	if ok {
+		return color, nil
+	} else {
+		return veex.Color{}, ErrUnknownBasicColor
+	}
+}
 
 func ParseHexColorGovee(s string) (veex.Color, error) {
 	if color, err := ParseHexColor(s); err == nil {
